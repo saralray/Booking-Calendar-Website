@@ -529,6 +529,10 @@ export default function App() {
             </div>
           </motion.section>
         </div>
+
+        <footer className="mt-10 text-center text-sm text-muted-foreground">
+          Copyright (c) 2026 Saral Assabumrungrat CUD61
+        </footer>
       </div>
 
       {datePickerOpen && (
