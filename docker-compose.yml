@@ -1,0 +1,17 @@
+services:
+  stemlab-calendar:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      PORT: 8080
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY:-}
+      GOOGLE_CALENDAR_ID: ${GOOGLE_CALENDAR_ID:-075fc8ead0cabfe9bee641306e905d712f052131f84960ab83d386556b72156b@group.calendar.google.com}
+      GOOGLE_CALENDAR_TIMEZONE: ${GOOGLE_CALENDAR_TIMEZONE:-Asia/Bangkok}
+      GOOGLE_SERVICE_ACCOUNT_EMAIL: ${GOOGLE_SERVICE_ACCOUNT_EMAIL:-}
+      GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY: ${GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY:-}
+      GOOGLE_SERVICE_ACCOUNT_JSON_FILE: ${GOOGLE_SERVICE_ACCOUNT_JSON_FILE:-/app/secrets/service-account.json}
+    volumes:
+      - ${GOOGLE_SERVICE_ACCOUNT_JSON_HOST_DIR:-./secrets}:/app/secrets:ro
+    ports:
+      - "8080:8080"

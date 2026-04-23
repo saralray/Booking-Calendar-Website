@@ -1,0 +1,33 @@
+.env
+.codex
+node_modules
+dist
+coverage
+secrets/*.json
+service-account*.json
+*.log
+*.tmp
+.DS_Store
+.idea
+.vscode
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.bak
+*.backup
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.exe
+*.dll
+*.so
+
+# Ignore all files in the public directory except for index.html
+/public/*
+!/public/index.html
+
+# Ignore all files in the src directory except for .js and .jsx files
+/src/*
+!/src/**/*.js
+!/src/**/*.jsx
