@@ -6,6 +6,10 @@ A Dockerized React + Node booking app that:
 - shows them in the website calendar view
 - creates new Google Calendar events from website reservations
 
+Webpage Preview
+
+![Project Logo](preview.png)
+
 ## Requirements
 
 - `git`
