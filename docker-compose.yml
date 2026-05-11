@@ -15,4 +15,4 @@ services:
     volumes:
       - ${GOOGLE_SERVICE_ACCOUNT_JSON_HOST_DIR:-./secrets}:/app/secrets:ro
     ports:
-      - "8080:8080"
+      - "8081:8080"

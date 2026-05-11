@@ -337,7 +337,7 @@ export default function App() {
           className="mb-12 text-center"
         >
           <h1 className="text-5xl md:text-6xl lg:text-7xl mb-4 text-foreground" style={{ fontWeight: 600 }}>
-            Stemlab Calendar Booking
+            Stemlab Room Reservation
           </h1>
         </motion.div>
 
