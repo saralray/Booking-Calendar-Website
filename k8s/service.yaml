@@ -6,9 +6,8 @@ metadata:
 spec:
   selector:
     app: booking-calendar
-  type: NodePort
+  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-      nodePort: 30081
