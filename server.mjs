@@ -137,6 +137,11 @@ const server = http.createServer(async (request, response) => {
   try {
     const url = new URL(request.url || '/', `http://${request.headers.host}`);
 
+    if (request.method === 'GET' && (url.pathname === '/healthz' || url.pathname === '/readyz')) {
+      json(response, 200, { status: 'ok' });
+      return;
+    }
+
     if (request.method === 'GET' && url.pathname === '/api/calendar/events') {
       const timeMin = url.searchParams.get('timeMin');
       const timeMax = url.searchParams.get('timeMax');

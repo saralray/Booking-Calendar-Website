@@ -20,4 +20,7 @@ COPY scripts ./scripts
 
 EXPOSE 8080
 
+# Run as the unprivileged `node` user (uid/gid 1000) provided by the base image.
+USER node
+
 CMD ["node", "server.mjs"]

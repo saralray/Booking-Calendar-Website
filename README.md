@@ -93,6 +93,49 @@ docker compose up -d --build
 docker compose down
 ```
 
+## Run on Kubernetes
+
+Manifests live in [`k8s/`](k8s/): namespace, config, secret, deployment, service,
+ingress, and a HorizontalPodAutoscaler, tied together by `kustomization.yaml`.
+
+### 1. Create the secret
+
+`k8s/secret.yaml` is gitignored. Create it from the example and fill in your
+base64-encoded values:
+
+```bash
+cp k8s/secret.example.yaml k8s/secret.yaml
+# echo -n 'value' | base64        -> for string values
+# base64 -w0 secrets/service-account.json   -> for the JSON file
+```
+
+### 2. Deploy
+
+```bash
+kubectl apply -k k8s/
+```
+
+This deploys everything into the `booking-calendar` namespace. Check status:
+
+```bash
+kubectl -n booking-calendar get pods,svc,hpa,ingress
+```
+
+### 3. Access the app
+
+- **NodePort** (works out of the box): `http://<node-ip>:30081`
+- **Ingress**: edit the host in [`k8s/ingress.yaml`](k8s/ingress.yaml) to your
+  real domain, then browse to it.
+
+### Prerequisites
+
+- The container image is published to `ghcr.io/saralray/booking-calendar-website`
+  by the GitHub Actions workflow on every push to `main`.
+- The HorizontalPodAutoscaler needs [metrics-server](https://github.com/kubernetes-sigs/metrics-server)
+  installed in the cluster.
+- The Ingress needs an ingress controller (e.g. ingress-nginx). If you don't use
+  one, remove `ingress.yaml` from `k8s/kustomization.yaml` and rely on the NodePort.
+
 ## What the app does
 
 - The booking form date stays synced with the calendar view date

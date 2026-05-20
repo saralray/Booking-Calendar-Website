@@ -6,7 +6,7 @@ metadata:
   labels:
     app: booking-calendar
 spec:
-  replicas: 1
+  # Replica count is owned by the HorizontalPodAutoscaler (see hpa.yaml).
   selector:
     matchLabels:
       app: booking-calendar
@@ -15,6 +15,11 @@ spec:
       labels:
         app: booking-calendar
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
       containers:
         - name: booking-calendar
           image: ghcr.io/saralray/booking-calendar-website:latest
@@ -30,32 +35,41 @@ spec:
                 secretKeyRef:
                   name: booking-calendar-secret
                   key: GOOGLE_API_KEY
+            # Fallback credentials — optional because the app prefers the
+            # mounted service-account.json file (see volumeMounts below).
             - name: GOOGLE_SERVICE_ACCOUNT_EMAIL
               valueFrom:
                 secretKeyRef:
                   name: booking-calendar-secret
                   key: GOOGLE_SERVICE_ACCOUNT_EMAIL
+                  optional: true
             - name: GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY
               valueFrom:
                 secretKeyRef:
                   name: booking-calendar-secret
                   key: GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY
+                  optional: true
           volumeMounts:
             - name: service-account
               mountPath: /app/secrets
               readOnly: true
           readinessProbe:
             httpGet:
-              path: /
+              path: /readyz
               port: 8080
-            initialDelaySeconds: 10
+            initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             httpGet:
-              path: /
+              path: /healthz
               port: 8080
-            initialDelaySeconds: 20
+            initialDelaySeconds: 15
             periodSeconds: 30
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           resources:
             requests:
               cpu: 100m

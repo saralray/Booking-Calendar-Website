@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Deploy the whole stack with:  kubectl apply -k k8s/
+# secret.yaml is gitignored — create it first:
+#   cp k8s/secret.example.yaml k8s/secret.yaml   (then fill in base64 values)
+resources:
+  - namespace.yaml
+  - secret.yaml
+  - configmap.yaml
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+  - hpa.yaml
